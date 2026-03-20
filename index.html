@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelBit75</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            width: 100%;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        /* Hero Section */
+        .hero {
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Animated Gradient Background */
+        .glitch-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, #ff0000, #8b00ff, #0000ff, #ff0000, #8b00ff, #0000ff);
+            background-size: 200% 200%;
+            z-index: -2;
+            animation: gradient-shift 8s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" result="noise"/></filter><rect width="100" height="100" fill="%23000" filter="url(%23noise)" opacity="0.05"/></svg>');
+            background-repeat: repeat;
+            animation: noise-shift 0.1s infinite;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @keyframes noise-shift {
+            0% {
+                background-position: 0 0;
+                opacity: 0.03;
+            }
+            50% {
+                opacity: 0.08;
+            }
+            100% {
+                background-position: 40px 60px;
+                opacity: 0.03;
+            }
+        }
+
+        /* Glitch Lines */
+        .glitch-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .glitch-line {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ffff, #ff00ff, transparent);
+            opacity: 0;
+            animation: glitch-line-move 0.3s infinite;
+        }
+
+        .glitch-line:nth-child(1) {
+            top: 20%;
+            animation-delay: 0s;
+        }
+
+        .glitch-line:nth-child(2) {
+            top: 40%;
+            animation-delay: 0.1s;
+        }
+
+        .glitch-line:nth-child(3) {
+            top: 60%;
+            animation-delay: 0.2s;
+        }
+
+        .glitch-line:nth-child(4) {
+            top: 80%;
+            animation-delay: 0.3s;
+        }
+
+        @keyframes glitch-line-move {
+            0%, 100% {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Text Styling */
+        .glitch-text {
+            font-size: 4rem;
+            font-weight: bold;
+            color: #00ffff;
+            text-shadow: 
+                2px 2px #ff00ff,
+                -2px -2px #00ff00;
+            letter-spacing: 0.2em;
+            position: relative;
+            animation: text-glitch 0.3s infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            white-space: nowrap;
+        }
+
+        /* Split text parts */
+        .text-left {
+            display: inline-block;
+            transition: transform 0.5s ease;
+        }
+
+        .text-middle {
+            display: inline-block;
+            transition: transform 0.5s ease;
+            min-width: 2.5em;
+            text-align: center;
+        }
+
+        .text-right {
+            display: inline-block;
+            transition: transform 0.5s ease;
+        }
+
+        /* Split state */
+        .glitch-text.split .text-left {
+            transform: translateX(-150vw);
+        }
+
+        .glitch-text.split .text-middle {
+            transform: translateX(0) scale(0);
+            opacity: 0;
+        }
+
+        .glitch-text.split .text-right {
+            transform: translateX(150vw);
+        }
+
+        @keyframes text-glitch {
+            0% {
+                transform: translate(0);
+                text-shadow: 2px 2px #ff00ff, -2px -2px #00ff00;
+            }
+            20% {
+                transform: translate(-2px, 2px);
+                text-shadow: -2px -2px #ff00ff, 2px 2px #00ff00;
+            }
+            40% {
+                transform: translate(2px, -2px);
+                text-shadow: 2px -2px #ff00ff, -2px 2px #00ff00;
+            }
+            60% {
+                transform: translate(-2px, -2px);
+                text-shadow: -2px 2px #ff00ff, 2px -2px #00ff00;
+            }
+            80% {
+                transform: translate(2px, 2px);
+                text-shadow: 2px 2px #ff00ff, -2px -2px #00ff00;
+            }
+            100% {
+                transform: translate(0);
+                text-shadow: 2px 2px #ff00ff, -2px -2px #00ff00;
+            }
+        }
+
+        /* Glitch Effect for Bit/Tech switching */
+        .bit-switch {
+            position: relative;
+            display: inline-block;
+            min-width: 2.5em;
+            text-align: center;
+        }
+
+        .switch-text {
+            display: inline-block;
+            position: relative;
+            animation: switch-glitch 0.4s ease-in-out forwards;
+        }
+
+        .switch-text.hide {
+            animation: switch-glitch-out 0.4s ease-in-out forwards;
+        }
+
+        @keyframes switch-glitch {
+            0% {
+                opacity: 0;
+                transform: translate(-4px, 4px) scaleX(0.8);
+                text-shadow: -2px 0 #ff00ff, 2px 0 #00ff00;
+            }
+            50% {
+                text-shadow: 2px 0 #ff00ff, -2px 0 #00ff00;
+            }
+            100% {
+                opacity: 1;
+                transform: translate(0) scaleX(1);
+                text-shadow: 2px 2px #ff00ff, -2px -2px #00ff00;
+            }
+        }
+
+        @keyframes switch-glitch-out {
+            0% {
+                opacity: 1;
+                transform: translate(0) scaleX(1);
+                text-shadow: 2px 2px #ff00ff, -2px -2px #00ff00;
+            }
+            50% {
+                text-shadow: -2px 0 #ff00ff, 2px 0 #00ff00;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(4px, -4px) scaleX(0.8);
+                text-shadow: 2px 0 #ff00ff, -2px 0 #00ff00;
+            }
+        }
+
+        /* Projects Section */
+        .projects {
+            width: 100%;
+            height: 100vh;
+            background: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 5;
+            padding-top: 100px;
+        }
+
+        .projects-title {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00ffff;
+            text-shadow: 
+                2px 2px #ff00ff,
+                -2px -2px #00ff00;
+            letter-spacing: 0.2em;
+        }
+
+        /* Constellation Section */
+        .constellation-section {
+            width: 100%;
+            min-height: 100vh;
+            background: #000000;
+            padding: 80px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 5;
+        }
+
+        .constellation-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            max-width: 1200px;
+            width: 100%;
+            align-items: center;
+        }
+
+        .constellation-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .constellation-title {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00ffff;
+            text-shadow: 
+                2px 2px #ff00ff,
+                -2px -2px #00ff00;
+            letter-spacing: 0.2em;
+            margin-bottom: 40px;
+        }
+
+        .launch-button {
+            display: inline-block;
+            padding: 20px 40px;
+            background: #00ffff;
+            color: #000000;
+            text-decoration: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border: 3px solid #00ffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-shadow: none;
+            width: fit-content;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .launch-button:hover {
+            background: #ff00ff;
+            border-color: #ff00ff;
+            box-shadow: 0 0 20px #ff00ff, 0 0 40px #ff00ff;
+            transform: translate(-2px, -2px);
+        }
+
+        .constellation-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .constellation-image img {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 50%;
+            box-shadow: 0 0 30px #00ffff, 0 0 60px #8b00ff;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .glitch-text {
+                font-size: 2.5rem;
+            }
+            .projects-title {
+                font-size: 2rem;
+            }
+            .constellation-title {
+                font-size: 2rem;
+            }
+            .constellation-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .constellation-section {
+                padding: 40px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .glitch-text {
+                font-size: 1.8rem;
+            }
+            .projects-title {
+                font-size: 1.5rem;
+            }
+            .constellation-title {
+                font-size: 1.5rem;
+            }
+            .launch-button {
+                padding: 15px 30px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glitch-bg"></div>
+    <div class="noise"></div>
+    <div class="glitch-lines">
+        <div class="glitch-line"></div>
+        <div class="glitch-line"></div>
+        <div class="glitch-line"></div>
+        <div class="glitch-line"></div>
+    </div>
+
+    <div class="hero">
+        <div class="container">
+            <div class="glitch-text" id="glitchText">
+                <span class="text-left">Pixel</span><span class="text-middle"><span class="bit-switch"><span class="switch-text">Bit</span></span></span><span class="text-right">75</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="projects">
+        <div class="projects-title">PROJECTS</div>
+    </div>
+
+    <div class="constellation-section">
+        <div class="constellation-container">
+            <div class="constellation-content">
+                <div class="constellation-title">Constellation</div>
+                <a href="https://pixeltech-75.github.io/constellation/home.html" class="launch-button">Launch</a>
+            </div>
+            <div class="constellation-image">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cdefs%3E%3CradialGradient id='grad1' cx='40%25' cy='40%25'%3E%3Cstop offset='0%25' style='stop-color:%23ff69ff;stop-opacity:1' /%3E%3Cstop offset='50%25' style='stop-color:%238b00ff;stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:%230000ff;stop-opacity:1' /%3E%3C/radialGradient%3E%3C/defs%3E%3Ccircle cx='200' cy='200' r='200' fill='url(%23grad1)' /%3E%3Ccircle cx='150' cy='150' r='40' fill='%23ffffff' opacity='0.8' /%3E%3Ccircle cx='280' cy='120' r='30' fill='%23ffffff' opacity='0.6' /%3E%3Ccircle cx='320' cy='250' r='35' fill='%23ffffff' opacity='0.7' /%3E%3Ccircle cx='100' cy='280' r='25' fill='%23ffffff' opacity='0.5' /%3E%3Ccircle cx='220' cy='300' r='20' fill='%23ffffff' opacity='0.6' /%3E%3C/svg%3E" alt="Constellation" />
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const glitchText = document.getElementById('glitchText');
+        const projectsSection = document.querySelector('.projects');
+        let isBit = true;
+
+        // Bit/Tech switching
+        function switchText() {
+            const currentText = document.querySelector('.switch-text');
+            const newText = isBit ? 'Tech' : 'Bit';
+            
+            currentText.classList.add('hide');
+            
+            setTimeout(() => {
+                currentText.textContent = newText;
+                currentText.classList.remove('hide');
+                isBit = !isBit;
+            }, 200);
+        }
+
+        setInterval(switchText, 3000);
+
+        // Parallax scrolling for projects section
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const projectsRect = projectsSection.getBoundingClientRect();
+            const projectsTopPosition = projectsRect.top;
+            const windowHeight = window.innerHeight;
+
+            // Apply parallax effect - move 50% of scroll speed
+            projectsSection.style.transform = `translateY(${scrollY * 0.5}px)`;
+
+            // When projects section enters viewport, split the text
+            if (projectsTopPosition < windowHeight * 0.75) {
+                glitchText.classList.add('split');
+            } else {
+                glitchText.classList.remove('split');
+            }
+        });
+    </script>
+</body>
+</html>
